@@ -7,6 +7,7 @@ o	Class 2: Artifact (non-cardiac noise) had 40 audio files.
 o	Class 3: Extra heart sounds (additional sounds beyond S1/S2) had 19 audio files.
 Media: Bio-medical signal processing
 <img width="804" height="536" alt="image" src="https://github.com/user-attachments/assets/2ec013e4-0e8e-4d5e-a8d9-00420fbca53f" />
+
 Initial Baseline Classification Modelling
 Performance Comparison:
 Model	Training Time (s)	Inference Time (s)	Accuracy	Abnormal Recall	False Negative Rate
