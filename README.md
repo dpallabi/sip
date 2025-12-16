@@ -1,37 +1,66 @@
-Final Result
-Media: Class Distribution
-•	Classification Categories: Established four-class system: 
-o	Class 0: Normal (healthy heart sounds) had 351 audio files.
-o	Class 1: Murmur (abnormal whooshing sounds) had 129 audio files.
-o	Class 2: Artifact (non-cardiac noise) had 40 audio files.
-o	Class 3: Extra heart sounds (additional sounds beyond S1/S2) had 19 audio files.
-Media: Bio-medical signal processing
-<img width="804" height="536" alt="image" src="https://github.com/user-attachments/assets/2ec013e4-0e8e-4d5e-a8d9-00420fbca53f" />
+# Automated Heartbeat Sound Classification and Anomaly Detection  
+### Summer Internship Project (SIP), NIT Durgapur
 
-Initial Baseline Classification Modelling
-Performance Comparison:
-Model	Training Time (s)	Inference Time (s)	Accuracy	Abnormal Recall	False Negative Rate
-SVM (Default)	25.97	8.51	0.78	0.55	0.45
-SVM (Grid)	704.21	9.89	0.85	0.76	0.24
-RF (Default)	3.22	0.034	0.82	0.61	0.39
-RF (Grid)	56.65	0.061	0.82	0.60	0.40
-XGB (Default)	4.03	0.011	0.85	0.71	0.29
-XGB (Grid)	99.40	0.011	0.87	0.71	0.29
+This repository contains the work carried out during my **Summer Research Internship at NIT Durgapur**, focused on developing a **biomedical signal processing and machine learning pipeline** for automated heartbeat sound analysis.
 
-Media: Performance Comparison for Accuracy, Recall, and FNR after Grid Search CV
-<img width="970" height="611" alt="image" src="https://github.com/user-attachments/assets/117e9982-12dd-4a26-b0f0-fe1f5f415321" />
+The project integrates:
+- **Biomedical signal processing of phonocardiogram (PCG) signals**
+- **Feature-based machine learning with Bayesian optimization**
+- **Semi-supervised anomaly detection using deep learning**
 
-Media: Pareto Front Analysis after Multi Objective Bayesian Optimization
-<img width="969" height="726" alt="image" src="https://github.com/user-attachments/assets/a19b6b46-12e8-445c-bfbe-9a2684a4b869" />
+---
 
-Computational Performance:
-•	Total Optimization Time: 3.88 hours (13,977 seconds)
-•	Total Evaluations: 900 configurations
-•	Algorithm Distribution: XG Boost (74.1%), SVM (15.0%), Random Forest (10.9%)
-Best Individual Metrics:
-Accuracy	88.43%	XGBoost	Evaluation #567
-Abnormal Recall	83.29%	SVM	Evaluation #340
-F1 Score	88.29%	SVM	Evaluation #340
-Lowest FNR	16.71%	SVM	Evaluation #340
-Fastest Training	1.13s	Random Forest	Optimized config
-Fastest Testing	0.014s	Random Forest	Optimized config
+## 📁 Dataset and Feature Representation
+
+- Heartbeat sound recordings were segmented into individual cycles
+- Each cycle was represented using MFCC-based feature vectors
+  
+---
+## 🛠️ Methodology
+
+### 🫀 Biomedical Signal Processing Pipeline
+
+Heartbeat sounds are non-stationary biomedical signals with strong physiological structure.  
+To ensure clinically meaningful analysis, a dedicated **signal processing pipeline** was designed prior to model training.
+
+- Preprocessing of raw PCG audio signals using **Bandpass Butterworth Filter**  
+- Normalization and noise handling  
+- Segmentation of recordings into individual cardiac cycles using **Hilbert Transform**
+- Extraction of **MFCC (Mel-Frequency Cepstral Coefficients)** to capture spectral characteristics of heart sounds  
+- Preprocessed features and labels were stored as NumPy arrays (`X.npy`, `y.npy`) for reproducibility and efficient experimentation
+
+### Supervised Classification
+
+The first phase addressed **heartbeat sound classification** using labeled data.
+
+**Models used:**
+- **Support Vector Machine (SVM)** – margin-based classifier suitable for high-dimensional MFCC features  
+- **Random Forest (RF)** – ensemble of decision trees providing robustness to noise  
+- **XGBoost (XGB)** – boosting-based classifier capturing complex feature interactions  
+
+#### Bayesian Hyperparameter Optimization (SMAC)
+
+To avoid ad-hoc tuning, **SMAC (Sequential Model-based Algorithm Configuration)** was used for **Bayesian hyperparameter optimization**, enabling principled and reproducible model selection.
+
+SMAC optimized:
+- SVM (kernel, C, gamma)  
+- Random Forest (number of trees, depth)  
+- XGBoost (learning rate, tree depth, estimators)  
+
+---
+
+### Anomaly Detection (Semi-Supervised)
+
+To reflect realistic clinical deployment, the problem was reformulated as **anomaly detection**, where models are trained exclusively on **normal heartbeats**.
+
+**Anomaly detection methods implemented:**
+
+| Method | Description |
+|------|-------------|
+| **One-Class SVM** | Learns a boundary around normal cardiac cycles |
+| **Isolation Forest** | Ensemble-based anomaly detection via random isolation |
+| **Dense Bottleneck Autoencoder** | Learns compact representations of normal heart sounds and detects anomalies using reconstruction error |
+
+The autoencoder was implemented using **TensorFlow/Keras**, introducing deep learning–based representation learning into the pipeline.
+
+---
