@@ -10,15 +10,15 @@ The project integrates:
 
 ---
 
-## 📁 Dataset and Feature Representation
+## Dataset and Feature Representation
 
 - Heartbeat sound recordings were segmented into individual cycles
 - Each cycle was represented using MFCC-based feature vectors
   
 ---
-## 🛠️ Methodology
+## Methodology
 
-### 🫀 Biomedical Signal Processing Pipeline
+### Biomedical Signal Processing Pipeline
 
 Heartbeat sounds are non-stationary biomedical signals with strong physiological structure.  
 To ensure clinically meaningful analysis, a dedicated **signal processing pipeline** was designed prior to model training.
@@ -28,6 +28,8 @@ To ensure clinically meaningful analysis, a dedicated **signal processing pipeli
 - Segmentation of recordings into individual cardiac cycles using **Hilbert Transform**
 - Extraction of **MFCC (Mel-Frequency Cepstral Coefficients)** to capture spectral characteristics of heart sounds  
 - Preprocessed features and labels were stored as NumPy arrays (`X.npy`, `y.npy`) for reproducibility and efficient experimentation
+
+---
 
 ### Supervised Classification
 
